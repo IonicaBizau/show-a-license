@@ -1,0 +1,48 @@
+
+
+
+Share this licence, but don't modify it.
+
+Basically, this license gives freedom for the users.
+
+Respect the freedom of others
+
+Bla, bla, bla
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+No sublicense!
+
+
+
+
+
+
+required:
+  - include-copyright
+  - document-changes
+  - disclose-source
+
+permitted:
+  - commercial-use
+  - modifications
+  - distribution
+  - patent-use
+  - private-use
+
+forbidden:
+  - no-liability
+
+---
+
