@@ -138,7 +138,7 @@ function renderLicense(err, data) {
     data.license.forEach(function (c, i) {
         html += "<tr>";
         html += "<td class='explanation'>" + data.explanation[i] + "</td>";
-        html += "<td><pre>" + c + "</pre></td>";
+        html += "<td><pre>" + c.replace(/</g, "&lt;").replace(/>/g, "&gt;") + "</pre></td>";
         html += "</tr>";
     });
 
