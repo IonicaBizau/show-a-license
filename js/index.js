@@ -101,6 +101,13 @@ var $ = require("elm-select")
 var HASH_PREFIX = "#license-";
 var licenseTable = $(".license-view table")[0];
 var tableTbody = $("tbody", licenseTable)[0];
+var viewExplanationsEl = $("tfoot", licenseTable)[0];
+
+viewExplanationsEl.addEventListener("click", function (e) {
+    e.preventDefault();
+    Url.updateSearchParam("hide_explanations")
+    location.reload()
+});
 
 function showNormalView() {
     $(".main-view", function (elm) {
@@ -164,7 +171,9 @@ function renderLicense(err, data) {
     var showExplanations = Url.queryString("hide_explanations") !== "true";
     if (showExplanations) {
         licenseTable.classList.remove("shadow");
+        viewExplanationsEl.classList.add("hide");
     }
+    var html = "";
     data.license.forEach(function (c, i) {
         html += "<tr>";
         if (showExplanations) {

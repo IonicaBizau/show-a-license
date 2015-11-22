@@ -29,6 +29,7 @@ pre {
 }
 
 .table.no-border,
+.table.no-border th,
 .table.no-border td {
     border: none !important;
     vertical-align: top;
