@@ -122,6 +122,9 @@ viewExplanationsEl.addEventListener("click", function (e) {
 });
 
 function showNormalView() {
+    $(".license-view", function (elm) {
+        elm.classList.add("hide");
+    });
     $(".main-view", function (elm) {
         elm.classList.remove("hide");
     });
