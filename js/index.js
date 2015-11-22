@@ -200,8 +200,8 @@ function checkHash() {
     showLicenseView(license);
 }
 
-checkHash();
 window.addEventListener("hashchange", checkHash);
+window.addEventListener("load", checkHash);
 
 },{"barbe":3,"elm-select":5,"same-time":7,"whatwg-fetch":10}],3:[function(require,module,exports){
 // Dependencies
