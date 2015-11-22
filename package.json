@@ -1,17 +1,99 @@
 {
   "name": "showalicense.com",
   "version": "1.0.0",
-  "description": "Software licenses explained for human beings.",
+  "description": "A site to provide an easy way to show licenses and their human-readable explanations.",
   "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ionică Bizău <bizauionica@gmail.com> (http://ionicabizau.net)",
   "license": "MIT",
+  "blah": {
+    "h_img": "http://i.imgur.com/DEYIE8P.png",
+    "description": [
+      {
+        "h2": "Usage"
+      },
+      {
+        "p": "Whether you just want to show a license or see its human-readable explanation, you can use this website. It provides a nice querystring API documented below:"
+      },
+      {
+        "ul": [
+          "`#license-<license>` (hash): set the license to display",
+          "`fullname=<name>`: set the copyright holder name",
+          "`year=<name>`: set the starting copyright yea",
+          "`hide_explanations=<true|false>` (default: `false`): hide the explanations column"
+        ]
+      }
+    ],
+    "example": [
+      {
+        "h2": "Examples"
+      },
+      {
+        "ul": [
+          "To see the MIT license access this url: http://showalicense.com/#license-mit",
+          "To set the copyright holder name, use the `fullname=<name>` querystring parameter: http://showalicense.com/?fullname=Alice#license-mit",
+          "To set the starting copyright year use the `year` parameter: http://showalicense.com/?year=2013&fullname=Alice#license-mit",
+          "To hide the explanations column, you have to use `hide_explanations=true`: http://showalicense.com/?hide_explanations=true&year=2013&fullname=Alice#license-mit"
+        ]
+      }
+    ],
+    "contributing": [
+      {
+        "h3": "Explaining a license"
+      },
+      {
+        "p": "Explanations are kept in `txt` files in the [`explanations`](/explanations) directory, having the license names (e.g. `mit.txt`)."
+      },
+      {
+        "p": "Contributions in this directions are really appreciated."
+      },
+      {
+        "ol": [
+          "Fork this repository.",
+          "Edit the `explanations/<license>.txt` file (you can follow [`explanations/mit.txt`](/explanations/mit.txt) as example).",
+          "Add yourself as contributor in [`package.json`](/package.json).",
+          "Raise a pull request! :tada:"
+        ]
+      },
+      {
+        "h3": "Adding a new license"
+      },
+      {
+        "p": "If the license you're searching for is missing, make sure you add it."
+      },
+      {
+        "ol": [
+          "Fork this repository.",
+          "Add a new file in the [`licenses`](/licenses) directory, named `<license>.txt` (replace `<license>` with the license name) and then do the same in the [`explanations`](/explanations) directory (you can follow the MIT license example: see [`explanations/mit.txt`](/explanations/mit.txt) and [`licenses/mit.txt`](/licenses/mit.txt)).",
+          "Give nice, funny and useful explanation in the `explanations/<license>.txt` file you added.",
+          "Add yourself as contributor in [`package.json`](/package.json).",
+          "Raise a pull request! :tada:"
+        ]
+      }
+    ]
+  },
   "dependencies": {
     "barbe": "^2.1.0",
     "elm-select": "^1.3.0",
     "same-time": "^2.2.0",
     "whatwg-fetch": "^0.10.1"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IonicaBizau/showalicense.com.git"
+  },
+  "keywords": [
+    "license",
+    "show",
+    "understand",
+    "list",
+    "explain"
+  ],
+  "bugs": {
+    "url": "https://github.com/IonicaBizau/showalicense.com/issues"
+  },
+  "homepage": "https://github.com/IonicaBizau/showalicense.com#readme"
 }
