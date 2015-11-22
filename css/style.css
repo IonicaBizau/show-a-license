@@ -11,10 +11,10 @@ h1, h2, h3, h4, h4, h5, h6 {
 }
 
 .container {
-    padding-top: 20px;
+    padding-top: 50px;
 }
 
-body {
+html, body {
     font-family: "Chivo", serif;
     background-color: #fafafa;
 }
@@ -75,6 +75,10 @@ a:hover {
 table.shadow {
     width: 720px !important;
     margin: 0 auto;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     border-radius: 0;
+}
+
+.table {
+    background: #fff;
+    box-shadow: 0 2px 30px rgba(0, 0, 0, 0.2);
 }
