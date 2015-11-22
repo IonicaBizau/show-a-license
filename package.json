@@ -1,13 +1,13 @@
 {
-  "name": "see-a-license",
+  "name": "showalicense.com",
   "version": "1.0.0",
   "description": "Software licenses explained for human beings.",
   "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Ionică Bizău <bizauionica@gmail.com> (http://ionicabizau.net)",
+  "license": "MIT",
   "dependencies": {
     "elm-select": "^1.3.0",
     "same-time": "^2.2.0",
