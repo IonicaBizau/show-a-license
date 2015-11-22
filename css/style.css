@@ -82,3 +82,32 @@ table.shadow {
     background: #fff;
     box-shadow: 0 2px 30px rgba(0, 0, 0, 0.2);
 }
+
+.main-view h1 {
+    font-size: 60px;
+}
+.main-view h2 {
+    font-size: 27px;
+    line-height: 30px;
+    padding: 20px 100px;
+    position: relative;
+    color: #149ad4;
+}
+
+.main-view h2 span {
+    position: absolute;
+    display: block;
+    float: left;
+    top: 50%;
+    margin-top: -22px;
+    color: #f1f1f1;
+    font-size: 70px;
+}
+
+.main-view h2 span:first-child {
+    left: 65px;
+}
+
+.main-view h2 span:last-child {
+    right: 65px;
+}
