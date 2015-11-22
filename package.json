@@ -9,6 +9,7 @@
   "author": "Ionică Bizău <bizauionica@gmail.com> (http://ionicabizau.net)",
   "license": "MIT",
   "dependencies": {
+    "barbe": "^2.1.0",
     "elm-select": "^1.3.0",
     "same-time": "^2.2.0",
     "whatwg-fetch": "^0.10.1"

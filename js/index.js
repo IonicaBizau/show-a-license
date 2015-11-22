@@ -95,6 +95,7 @@ require("whatwg-fetch");
 
 var $ = require("elm-select")
   , sameTime = require("same-time")
+  , barbe = require("barbe")
   ;
 
 var HASH_PREFIX = "#license-";
@@ -102,7 +103,30 @@ var licenseTable = $(".license-view table")[0];
 var tableTbody = $(licenseTable, "tbody")[0];
 
 function showNormalView() {
+}
 
+function renderInfo(c) {
+    var data = {}
+      , thisYear = new Date().getFullYear().toString()
+      , startYear = Url.queryString("year")
+      ;
+
+    data.year = startYear;
+    data.fullname = Url.queryString("fullname");
+
+    if (!data.fullname) {
+        delete data.fullname;
+    }
+
+    if (data.year) {
+        if (data.year < thisYear) {
+            data.year += "-" + thisYear.substring(2);
+        }
+    } else {
+        delete data.year;
+    }
+
+    return barbe(c, ["[", "]"], data).replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
 function getLicense(license, fn) {
@@ -111,7 +135,7 @@ function getLicense(license, fn) {
             fetch("/licenses/" + license + ".txt").then(function (res) {
                 return res.text();
             }).then(function (text) {
-                done(null, text);
+                done(null, renderInfo(text));
             }).catch(done);
         }
       , function (done) {
@@ -135,10 +159,13 @@ function getLicense(license, fn) {
 
 function renderLicense(err, data) {
     var html = "<tbody>";
+    var showExplanations = Url.queryString("hide_explanations") !== "true";
     data.license.forEach(function (c, i) {
         html += "<tr>";
-        html += "<td class='explanation'>" + data.explanation[i] + "</td>";
-        html += "<td><pre>" + c.replace(/</g, "&lt;").replace(/>/g, "&gt;") + "</pre></td>";
+        if (showExplanations) {
+            html += "<td class='explanation'>" + data.explanation[i] + "</td>";
+        }
+        html += "<td><pre>" + c + "</pre></td>";
         html += "</tr>";
     });
 
@@ -148,6 +175,9 @@ function renderLicense(err, data) {
 
 function showLicenseView(license) {
     getLicense(license, renderLicense);
+    $(".main-view", function (elm) {
+        elm.classList.add("hide");
+    });
 }
 
 function checkHash() {
@@ -160,7 +190,87 @@ function checkHash() {
 checkHash();
 window.addEventListener("hashchange", checkHash);
 
-},{"elm-select":3,"same-time":5,"whatwg-fetch":8}],3:[function(require,module,exports){
+},{"barbe":3,"elm-select":5,"same-time":7,"whatwg-fetch":10}],3:[function(require,module,exports){
+// Dependencies
+var RegexEscape = require("regex-escape");
+
+/**
+ * Barbe
+ * Renders the input template including the data.
+ *
+ * @name Barbe
+ * @function
+ * @param {String} text The template text.
+ * @param {Array} arr An array of two elements: the first one being the start snippet (default: `"{"`) and the second one being the end snippet (default: `"}"`).
+ * @param {Object} data The template data.
+ * @return {String} The rendered template.
+ */
+function Barbe(text, arr, data) {
+    if (!Array.isArray(arr)) {
+        data = arr;
+        arr = ["{", "}"];
+    }
+
+    if (!data || data.constructor !== Object) {
+        return text;
+    }
+
+    arr = arr.map(RegexEscape);
+
+    var value = null
+      , splits = []
+      , i = 0
+      ;
+
+    function deep(obj, path) {
+        Object.keys(obj).forEach(function (c) {
+            value = obj[c];
+            path.push(c);
+            if (typeof value === "object") {
+                return deep(value, path);
+            }
+            text = text.replace(new RegExp(arr[0] + path.join(".") + arr[1], "g"), value);
+            path.pop();
+        });
+    }
+
+    deep(data, []);
+
+    return text;
+}
+
+module.exports = Barbe;
+
+},{"regex-escape":4}],4:[function(require,module,exports){
+/**
+ * RegexEscape
+ * Escapes a string for using it in a regular expression.
+ *
+ * @name RegexEscape
+ * @function
+ * @param {String} input The string that must be escaped.
+ * @return {String} The escaped string.
+ */
+function RegexEscape(input) {
+    return input.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+}
+
+/**
+ * proto
+ * Adds the `RegexEscape` function to `RegExp` class.
+ *
+ * @name proto
+ * @function
+ * @return {Function} The `RegexEscape` function.
+ */
+RegexEscape.proto = function () {
+    RegExp.escape = RegexEscape;
+    return RegexEscape;
+};
+
+module.exports = RegexEscape;
+
+},{}],5:[function(require,module,exports){
 // Dependencies
 var Typpy = require("typpy");
 
@@ -212,7 +322,7 @@ function ElmSelect(elm, fn, args, parent) {
 
 module.exports = ElmSelect;
 
-},{"typpy":4}],4:[function(require,module,exports){
+},{"typpy":6}],6:[function(require,module,exports){
 /**
  * Typpy
  * Gets the type of the input value or compares it
@@ -296,7 +406,7 @@ Typpy.get = function (input, str) {
 
 module.exports = Typpy;
 
-},{}],5:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 (function (process){
 // Dependencies
 var Deffy = require("deffy");
@@ -360,7 +470,7 @@ function SameTime(arr, cb) {
 module.exports = SameTime;
 
 }).call(this,require('_process'))
-},{"_process":1,"deffy":6}],6:[function(require,module,exports){
+},{"_process":1,"deffy":8}],8:[function(require,module,exports){
 // Dependencies
 var Typpy = require("typpy");
 
@@ -409,9 +519,9 @@ function Deffy(input, def, options) {
 
 module.exports = Deffy;
 
-},{"typpy":7}],7:[function(require,module,exports){
-arguments[4][4][0].apply(exports,arguments)
-},{"dup":4}],8:[function(require,module,exports){
+},{"typpy":9}],9:[function(require,module,exports){
+arguments[4][6][0].apply(exports,arguments)
+},{"dup":6}],10:[function(require,module,exports){
 (function() {
   'use strict';
 
