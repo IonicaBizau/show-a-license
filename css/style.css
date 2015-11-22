@@ -11,7 +11,7 @@ h1, h2, h3, h4, h4, h5, h6 {
 }
 
 .container {
-    margin-top: 20px;
+    padding-top: 20px;
 }
 
 body {
@@ -55,11 +55,25 @@ pre {
 
 .footer a {
     text-decoration: none;
-    color: #111;
     font-weight: bold;
 }
 
-.footer a:hover {
-    text-decoration: underline;
-    color: #444;
+.controls a {
+    font-weight: normal;
+}
+
+a {
+    color: #111 !important;
+}
+
+a:hover {
+    text-decoration: underline !important;
+    color: #444 !important;
+}
+
+table.shadow {
+    width: 720px !important;
+    margin: 0 auto;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 0;
 }

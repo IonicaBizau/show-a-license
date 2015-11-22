@@ -100,9 +100,12 @@ var $ = require("elm-select")
 
 var HASH_PREFIX = "#license-";
 var licenseTable = $(".license-view table")[0];
-var tableTbody = $(licenseTable, "tbody")[0];
+var tableTbody = $("tbody", licenseTable)[0];
 
 function showNormalView() {
+    $(".main-view", function (elm) {
+        elm.classList.remove("hide");
+    });
 }
 
 function renderInfo(c) {
@@ -158,8 +161,10 @@ function getLicense(license, fn) {
 }
 
 function renderLicense(err, data) {
-    var html = "<tbody>";
     var showExplanations = Url.queryString("hide_explanations") !== "true";
+    if (showExplanations) {
+        licenseTable.classList.remove("shadow");
+    }
     data.license.forEach(function (c, i) {
         html += "<tr>";
         if (showExplanations) {
@@ -169,7 +174,6 @@ function renderLicense(err, data) {
         html += "</tr>";
     });
 
-    html += "</tbody>";
     tableTbody.innerHTML = html;
 }
 
