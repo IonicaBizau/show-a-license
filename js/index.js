@@ -91,11 +91,12 @@ process.chdir = function (dir) {
 process.umask = function() { return 0; };
 
 },{}],2:[function(require,module,exports){
-
+// Dependencies
 var $ = require("elm-select")
   , _fetch = require("whatwg-fetch")
   , sameTime = require("same-time")
   , barbe = require("barbe")
+  , Err = require("err")
   ;
 
 // Constants
@@ -154,22 +155,26 @@ function renderInfo(c) {
     return barbe(c, ["[", "]"], data).replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+function doRequest(url) {
+    return function (done) {
+        fetch(url).then(function (res) {
+            if (res.status === 404) {
+                throw new Err("Not found: " + url, 404);
+            }
+            if (res.status >= 400) {
+                throw new Err("Failed to fetch the url: " + url, res.status);
+            }
+            return res.text();
+        }).then(function (text) {
+            done(null, renderInfo(text));
+        }).catch(done);
+    };
+}
+
 function getLicense(license, fn) {
     sameTime([
-        function (done) {
-            fetch("/licenses/" + license + ".txt").then(function (res) {
-                return res.text();
-            }).then(function (text) {
-                done(null, renderInfo(text));
-            }).catch(done);
-        }
-      , function (done) {
-            fetch("/explanations/" + license + ".txt").then(function (res) {
-                return res.text();
-            }).then(function (text) {
-                done(null, text);
-            }).catch(done);
-        }
+        doRequest("/licenses/" + license + ".txt")
+      , doRequest("/explanations/" + license + ".txt")
     ], function (err, data) {
         if (err) { return fn(err); }
         data = data.map(function (c) {
@@ -182,7 +187,20 @@ function getLicense(license, fn) {
     });
 }
 
+function showError(err) {
+    err = err[0];
+    var message = "Something";
+    if (err.code === 404) {
+        message = "Cannot find such a licence.";
+    }
+    sweetAlert("Oops...", message, "error");
+}
+
 function renderLicense(err, data) {
+
+    if (err) {
+        return showError(err);
+    }
 
     if (showExplanations) {
         licenseTable.classList.remove("shadow");
@@ -218,7 +236,7 @@ function checkHash() {
 window.addEventListener("hashchange", checkHash);
 window.addEventListener("load", checkHash);
 
-},{"barbe":3,"elm-select":5,"same-time":7,"whatwg-fetch":10}],3:[function(require,module,exports){
+},{"barbe":3,"elm-select":5,"err":7,"same-time":9,"whatwg-fetch":12}],3:[function(require,module,exports){
 // Dependencies
 var RegexEscape = require("regex-escape");
 
@@ -435,6 +453,52 @@ Typpy.get = function (input, str) {
 module.exports = Typpy;
 
 },{}],7:[function(require,module,exports){
+// Dependencies
+var typpy = require("typpy");
+
+/**
+ * Err
+ * Create a custom error object.
+ *
+ * @name Err
+ * @function
+ * @param {String|Error} error The error message or an existing `Error` instance.
+ * @param {String|Object} code The error code or the data object.
+ * @param {Object} data The data object (its fields will be appended to the `Error` object).
+ * @return {Error} The custom `Error` instance.
+ */
+function Err(error, code, data) {
+
+    // Create the error
+    if (!typpy(error, Error)) {
+        error = new Error(error);
+    }
+
+    // Err(message, code, data);
+    // Err(message, data);
+    if (typpy(data, Object)) {
+        data.code = code;
+    } else if (typpy(code, Object)) {
+        data = code;
+        code = undefined;
+    } else if (!typpy(code, undefined)) {
+        data = { code: code };
+    }
+
+    if (data) {
+        Object.keys(data).forEach(function (c) {
+            error[c] = data[c];
+        });
+    }
+
+    return error;
+}
+
+module.exports = Err;
+
+},{"typpy":8}],8:[function(require,module,exports){
+arguments[4][6][0].apply(exports,arguments)
+},{"dup":6}],9:[function(require,module,exports){
 (function (process){
 // Dependencies
 var Deffy = require("deffy");
@@ -498,7 +562,7 @@ function SameTime(arr, cb) {
 module.exports = SameTime;
 
 }).call(this,require('_process'))
-},{"_process":1,"deffy":8}],8:[function(require,module,exports){
+},{"_process":1,"deffy":10}],10:[function(require,module,exports){
 // Dependencies
 var Typpy = require("typpy");
 
@@ -547,9 +611,9 @@ function Deffy(input, def, options) {
 
 module.exports = Deffy;
 
-},{"typpy":9}],9:[function(require,module,exports){
+},{"typpy":11}],11:[function(require,module,exports){
 arguments[4][6][0].apply(exports,arguments)
-},{"dup":6}],10:[function(require,module,exports){
+},{"dup":6}],12:[function(require,module,exports){
 (function() {
   'use strict';
 

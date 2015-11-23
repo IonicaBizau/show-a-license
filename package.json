@@ -78,7 +78,8 @@
     "barbe": "^2.1.0",
     "elm-select": "^1.3.0",
     "same-time": "^2.2.0",
-    "whatwg-fetch": "^0.10.1"
+    "whatwg-fetch": "^0.10.1",
+    "err": "^1.0.0"
   },
   "devDependencies": {},
   "repository": {
