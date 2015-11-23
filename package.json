@@ -4,7 +4,9 @@
   "description": "A site to provide an easy way to show licenses and their human-readable explanations.",
   "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "statique -p 9000",
+    "watch": "watchify lib/index.js -o js/index.js -v"
   },
   "author": "Ionică Bizău <bizauionica@gmail.com> (http://ionicabizau.net)",
   "license": "MIT",
@@ -81,7 +83,10 @@
     "whatwg-fetch": "^0.10.1",
     "err": "^1.0.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "statique": "^3.1.0",
+    "watchify": "^3.6.1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/IonicaBizau/showalicense.com.git"
