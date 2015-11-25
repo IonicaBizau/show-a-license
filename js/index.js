@@ -1,96 +1,4 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-// shim for using process in browser
-
-var process = module.exports = {};
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = setTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            currentQueue[queueIndex].run();
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    clearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        setTimeout(drainQueue, 0);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-// TODO(shtylman)
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-},{}],2:[function(require,module,exports){
 // Dependencies
 var $ = require("elm-select")
   , _fetch = require("whatwg-fetch")
@@ -224,6 +132,9 @@ function showLicenseView(license) {
     $(".main-view", function (elm) {
         elm.classList.add("hide");
     });
+    $(".license-view", function (elm) {
+        elm.classList.remove("hide");
+    });
 }
 
 function checkHash() {
@@ -236,7 +147,7 @@ function checkHash() {
 window.addEventListener("hashchange", checkHash);
 window.addEventListener("load", checkHash);
 
-},{"barbe":3,"elm-select":5,"err":7,"same-time":9,"whatwg-fetch":12}],3:[function(require,module,exports){
+},{"barbe":2,"elm-select":4,"err":6,"same-time":8,"whatwg-fetch":12}],2:[function(require,module,exports){
 // Dependencies
 var RegexEscape = require("regex-escape");
 
@@ -287,7 +198,7 @@ function Barbe(text, arr, data) {
 
 module.exports = Barbe;
 
-},{"regex-escape":4}],4:[function(require,module,exports){
+},{"regex-escape":3}],3:[function(require,module,exports){
 /**
  * RegexEscape
  * Escapes a string for using it in a regular expression.
@@ -316,7 +227,7 @@ RegexEscape.proto = function () {
 
 module.exports = RegexEscape;
 
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 // Dependencies
 var Typpy = require("typpy");
 
@@ -368,7 +279,7 @@ function ElmSelect(elm, fn, args, parent) {
 
 module.exports = ElmSelect;
 
-},{"typpy":6}],6:[function(require,module,exports){
+},{"typpy":5}],5:[function(require,module,exports){
 /**
  * Typpy
  * Gets the type of the input value or compares it
@@ -452,7 +363,7 @@ Typpy.get = function (input, str) {
 
 module.exports = Typpy;
 
-},{}],7:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 // Dependencies
 var typpy = require("typpy");
 
@@ -496,9 +407,9 @@ function Err(error, code, data) {
 
 module.exports = Err;
 
-},{"typpy":8}],8:[function(require,module,exports){
-arguments[4][6][0].apply(exports,arguments)
-},{"dup":6}],9:[function(require,module,exports){
+},{"typpy":7}],7:[function(require,module,exports){
+arguments[4][5][0].apply(exports,arguments)
+},{"dup":5}],8:[function(require,module,exports){
 (function (process){
 // Dependencies
 var Deffy = require("deffy");
@@ -562,7 +473,7 @@ function SameTime(arr, cb) {
 module.exports = SameTime;
 
 }).call(this,require('_process'))
-},{"_process":1,"deffy":10}],10:[function(require,module,exports){
+},{"_process":11,"deffy":9}],9:[function(require,module,exports){
 // Dependencies
 var Typpy = require("typpy");
 
@@ -611,9 +522,102 @@ function Deffy(input, def, options) {
 
 module.exports = Deffy;
 
-},{"typpy":11}],11:[function(require,module,exports){
-arguments[4][6][0].apply(exports,arguments)
-},{"dup":6}],12:[function(require,module,exports){
+},{"typpy":10}],10:[function(require,module,exports){
+arguments[4][5][0].apply(exports,arguments)
+},{"dup":5}],11:[function(require,module,exports){
+// shim for using process in browser
+
+var process = module.exports = {};
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = setTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    clearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        setTimeout(drainQueue, 0);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+},{}],12:[function(require,module,exports){
 (function() {
   'use strict';
 
@@ -996,4 +1000,4 @@ arguments[4][6][0].apply(exports,arguments)
   self.fetch.polyfill = true
 })();
 
-},{}]},{},[2]);
+},{}]},{},[1]);
