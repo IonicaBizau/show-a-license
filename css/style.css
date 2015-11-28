@@ -12,7 +12,7 @@ h1, h2, h3, h4, h4, h5, h6 {
 }
 
 .container {
-    padding-top: 50px;
+    padding: 30px 0;
 }
 
 html, body {
@@ -23,6 +23,9 @@ html, body {
 .license-view table {
     width: 100%;
 }
+
+input.license-name {
+padding: 1em 5em;font-size: 1em;text-align: center;width: 260px;max-width: 100%;}
 
 pre {
     font-family: "Inconsolata", monaco, monospace;
@@ -90,9 +93,10 @@ table.shadow {
 .main-view h2 {
     font-size: 27px;
     line-height: 30px;
-    padding: 20px 100px;
+    padding: 70px 100px;
     position: relative;
     color: #149ad4;
+    display: inline-block;
 }
 
 .main-view h2 span {
@@ -111,4 +115,47 @@ table.shadow {
 
 .main-view h2 span:last-child {
     right: 65px;
+}
+
+section {
+    padding: 20px 0;
+}
+
+
+.triptych {
+    margin: 0 auto 20px
+}
+
+.triptych li {
+    width: 280px;
+    float: left;
+    margin-left: 27px
+}
+
+.triptych li:first-child {
+    margin-left: 0
+}
+
+.triptych li>a {
+    text-decoration: none
+}
+
+.triptych h3 {
+    font-size: 22px;
+    margin: 0 auto 20px auto;
+    width: 220px
+}
+
+.triptych span.octicon {
+    font-size: 4em;
+    padding-bottom: 20px;
+    color: #149ad4;
+}
+
+.triptych a {
+    color: #149ad4 !important;
+}
+
+.triptych .col {
+    padding: 0 10px;
 }

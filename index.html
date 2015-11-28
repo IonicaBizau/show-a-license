@@ -5,6 +5,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/caiuss/1.3.0/caiuss.min.css" type="text/css" media="screen" charset="utf-8">
         <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/2.2.2/octicons.min.css" type="text/css" media="screen" charset="utf-8">
+        <link rel="stylesheet" href="https://cdn.rawgit.com/IonicaBizau/gridly/gh-pages/dist/gridly-core.min.css" type="text/css" charset="utf-8">
         <title>Show a license</title>
     </head>
     <body>
@@ -12,15 +13,62 @@
             <section class="main-view text-center">
                 <h1>Understanding software licenses doesn't need to be scary</h1>
                 <h2>
-                  <span>{</span>
+                    <span>{</span>
                     Because human beings should be able to understand licenses, not only attorneys.
-                  <span>}</span>
+                    <span>}</span>
                 </h2>
                 <div >
                     <input class="form-elm license-name" placeholder="Enter the LICENSE name"></input>
                 </div>
-                <div class="content">
-                    <p></p>
+            </section>
+            <section class="main-view triptych features text-center">
+                <h2 class="mar-md">
+                    <span>{</span>
+                    Features
+                    <span>}</span>
+                </h2>
+                <div class="row content">
+                    <div class="col">
+                        <span class="octicon octicon-search"></span>
+                        <h3>Search</h3>
+                        <p>Use the input above to search your license.  </p>
+                        <p>If it's missing, you can <a href="https://github.com/IonicaBizau/showalicense.com#adding-a-new-license">add it</a>.</p>
+                    </div>
+                    <div class="col">
+                        <span class="octicon octicon-eye"></span>
+                        <h3>Display</h3>
+                        <p>Append the <strong>#license-&lt;license-name&gt;</strong> to the url to display the license content.</p>
+                        <p>Use the <a href="https://github.com/IonicaBizau/showalicense.com#usage">querystring parameters</a> to fill your data in the license output.</p>
+                    </div>
+                    <div class="col">
+                        <span class="octicon octicon-file-text"></span>
+                        <h3>Explain</h3>
+                        <p>This site provides paragraph-by-paragraph human-readable explanations, maintained by the community. <a href="https://github.com/IonicaBizau/showalicense.com#how-to-contribute">You can contribute too!</a></p>
+                    </div>
+                </div>
+            </section>
+            <section class="main-view triptych features text-center">
+                <h2 class="mar-md">
+                    <span>{</span>
+                    Contributing
+                    <span>}</span>
+                </h2>
+                <div class="row content">
+                    <div class="col">
+                        <span class="octicon octicon-heart"></span>
+                        <h3>Community</h3>
+                        <p>Thanks to the open-source community, the license explanations can be edited by anyone.</p>
+                    </div>
+                    <div class="col">
+                        <span class="octicon octicon-law"></span>
+                        <h3>Add a new license</h3>
+                        <p>If you can't find the license you're searching, feel free to <a href="https://github.com/IonicaBizau/showalicense.com#adding-a-new-license">add it</a>.</p>
+                    </div>
+                    <div class="col">
+                        <span class="octicon octicon-question"></span>
+                        <h3>Explain licenses</h3>
+                        <p>This site provides paragraph-by-paragraph human-readable explanations, maintained by the community. <a href="https://github.com/IonicaBizau/showalicense.com#how-to-contribute">You can contribute too!</a></p>
+                    </div>
                 </div>
             </section>
             <section class="license-view">
