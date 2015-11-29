@@ -186,7 +186,8 @@ span.visually-hidden {
     display: none;
 }
 
-.awesomplete > ul > li[aria-selected=true] {
+.awesomplete > ul > li[aria-selected=true],
+.awesomplete > ul > li:hover {
     background-color: #149AD4;
     color: #fff;
 }
