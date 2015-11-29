@@ -106,9 +106,15 @@ function showError(err) {
     err = err[0];
     var message = "Something";
     if (err.code === 404) {
-        message = "Cannot find such a licence.";
+        message = "Cannot find such a licence. Feel free to <a href='https://github.com/IonicaBizau/showalicense.com#adding-a-new-license'>add it</a>.";
+        location.hash = "";
     }
-    sweetAlert("Oops...", message, "error");
+    sweetAlert({
+        title: "Oops..."
+      , text: message
+      , type: "error"
+      , html: true
+    });
 }
 
 function renderLicense(err, data) {
