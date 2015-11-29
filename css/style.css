@@ -28,7 +28,7 @@ input.license-name {
 padding: 1em 5em;font-size: 1em;text-align: center;width: 260px;max-width: 100%;}
 
 pre {
-    font-family: "Inconsolata", monaco, monospace;
+    font-family: Monaco, "Inconsolata", monaco, monospace;
     margin: 0;
 }
 
@@ -56,24 +56,6 @@ pre {
     font-family: "Open Sans", sans-serif;
     font-weight: 400;
     color: #333;
-}
-
-.footer a {
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.controls a {
-    font-weight: normal;
-}
-
-a {
-    color: #111 !important;
-}
-
-a:hover {
-    text-decoration: underline !important;
-    color: #444 !important;
 }
 
 table.shadow {
@@ -136,9 +118,16 @@ section {
     margin-left: 0
 }
 
-.triptych li>a {
-    text-decoration: none
+a {
+    text-decoration: none;
+    color: #149ad4 !important;
 }
+
+a:hover {
+    text-decoration: underline !important;
+    color: #149ad4 !important;
+}
+
 
 .triptych h3 {
     font-size: 22px;
@@ -150,10 +139,6 @@ section {
     font-size: 4em;
     padding-bottom: 20px;
     color: #149ad4;
-}
-
-.triptych a {
-    color: #149ad4 !important;
 }
 
 .triptych .col {
