@@ -14,7 +14,14 @@ var HASH_PREFIX = "#license-";
 var licenseTable = $(".license-view table")[0]
   , tableTbody = $("tbody", licenseTable)[0]
   , viewExplanationsEl = $("tfoot", licenseTable)[0]
+  , searchLicenseEl = $("input.awesomplete")[0]
   ;
+
+searchLicenseEl.setAttribute("data-list", _licenses.join(","));
+searchLicenseEl.addEventListener("awesomplete-selectcomplete", function () {
+    location.hash = "license-" + this.value;
+});
+
 
 // Config
 var showExplanations = Url.queryString("hide_explanations") !== "true";

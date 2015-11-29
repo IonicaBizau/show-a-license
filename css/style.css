@@ -159,3 +159,49 @@ section {
 .triptych .col {
     padding: 0 10px;
 }
+
+/* awesomplete */
+input.awesomplete {
+    border-radius: 0;
+}
+
+.awesomplete > ul {
+    width: 422px;
+    list-style: none;
+    padding: 0;
+    margin-top: -6px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 999;
+}
+
+.awesomplete > ul > li {
+    padding: 15px;
+    font-size: 20px;
+    text-transform: uppercase;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.22);
+    cursor: pointer;
+    margin-top: -1px;
+}
+
+span.visually-hidden {
+    display: none;
+}
+
+.awesomplete > ul > li[aria-selected=true] {
+    background-color: #149AD4;
+    color: #fff;
+}
+
+.awesomplete mark {
+    background-color: transparent;
+    color: inherit;
+}
+
+.table tr td {
+    padding: 15px;
+}

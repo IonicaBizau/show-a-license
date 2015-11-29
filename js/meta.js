@@ -1,1 +1,1 @@
-_licenses = ["mit"];
+_licenses = ["mit", "foo"];
