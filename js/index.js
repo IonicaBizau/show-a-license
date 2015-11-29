@@ -22,12 +22,16 @@ searchLicenseEl.addEventListener("awesomplete-selectcomplete", function () {
     location.hash = "license-" + this.value;
 });
 
-
 // Config
-var showExplanations = Url.queryString("hide_explanations") !== "true";
+var showExplanations;
 
-if (showExplanations) {
-    $(".text", viewExplanationsEl)[0].innerHTML = "Hide explanations";
+function checkExplanationState() {
+    showExplanations = Url.queryString("hide_explanations") !== "true";
+    if (showExplanations) {
+        $(".text", viewExplanationsEl)[0].innerHTML = "Hide explanations";
+    } else {
+        $(".text", viewExplanationsEl)[0].innerHTML = "Show explanations";
+    }
 }
 
 // Handle the view explanation url
@@ -44,6 +48,8 @@ function showNormalView() {
     $(".main-view", function (elm) {
         elm.classList.remove("hide");
     });
+    searchLicenseEl.focus();
+
 }
 
 function renderInfo(c) {
@@ -103,18 +109,25 @@ function getLicense(license, fn) {
 }
 
 function showError(err) {
-    err = err[0];
-    var message = "Something";
-    if (err.code === 404) {
-        message = "Cannot find such a licence. Feel free to <a href='https://github.com/IonicaBizau/showalicense.com#adding-a-new-license'>add it</a>.";
-        location.hash = "";
-    }
-    sweetAlert({
+    err = err[0] || err;
+    var sweetErr = {
         title: "Oops..."
-      , text: message
+      , text: err.toString()
       , type: "error"
       , html: true
-    });
+    };
+
+    // License not found
+    if (err.code === 404) {
+        sweetErr.text = "Cannot find such a licence. Feel free to <a href='https://github.com/IonicaBizau/showalicense.com#adding-a-new-license'>add it</a>.";
+        location.hash = "";
+    } else if (err.code === "EXPLANATION_DOES_NOT_EXIST") {
+        sweetErr.type = "warning";
+        sweetErr.text = "This license doesn't have any explanation. Feel free to <a href='https://github.com/IonicaBizau/showalicense.com#explaining-a-license'>add it</a>.";
+    }
+
+    // Show the error
+    sweetAlert(sweetErr);
 }
 
 function renderLicense(err, data) {
@@ -124,7 +137,14 @@ function renderLicense(err, data) {
     }
 
     if (showExplanations) {
-        licenseTable.classList.remove("shadow");
+        if (!data.explanation.join("")) {
+            showError(new Err("Explanation doesn't exist. You can add it ", "EXPLANATION_DOES_NOT_EXIST"));
+            showExplanations = false;
+            Url.updateSearchParam("hide_explanations", true);
+            checkExplanationState();
+        } else {
+            licenseTable.classList.remove("shadow");
+        }
     }
 
     var html = "";
@@ -155,6 +175,7 @@ function checkHash() {
     if (hash.indexOf(HASH_PREFIX) !== 0) { return showNormalView(); }
     var license = hash.substring(HASH_PREFIX.length).toLowerCase();
     showLicenseView(license);
+    checkExplanationState();
 }
 
 window.addEventListener("hashchange", checkHash);

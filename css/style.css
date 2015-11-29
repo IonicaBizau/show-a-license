@@ -190,3 +190,8 @@ span.visually-hidden {
 .table tr td {
     padding: 15px;
 }
+
+a.home-link {
+    display: inline-block;
+    margin-bottom: 2em;
+}
