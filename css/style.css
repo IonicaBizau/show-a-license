@@ -30,6 +30,15 @@ padding: 1em 5em;font-size: 1em;text-align: center;width: 260px;max-width: 100%;
 pre {
     font-family: Monaco, "Inconsolata", monaco, monospace;
     margin: 0;
+    word-wrap: break-word;
+}
+
+.table.shadow pre {
+    width: 779px;
+}
+
+.table pre {
+    width: 750px;
 }
 
 .table.no-border,
