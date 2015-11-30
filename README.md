@@ -48,6 +48,11 @@ If the license you're searching for is missing, make sure you add it.
  4. Add yourself as contributor in [`package.json`](/package.json).
  5. Raise a pull request! :tada:
 
+## Thanks
+
+ - [github/choosealicense.com](https://github.com/github/choosealicense.com)–a good inspiration source (some ideas and CSS were taken from here) :sparkle:
+ - [**@Cerberus-tm**](https://github.com/Cerberus-tm)–who had the idea for the site name :cake:
+
 ## License
 
 [MIT][license] © [Ionică Bizău][website]

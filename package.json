@@ -78,7 +78,13 @@
           "Raise a pull request! :tada:"
         ]
       }
-    ]
+    ],
+    "thanks": {
+        "ul": [
+            "[github/choosealicense.com](https://github.com/github/choosealicense.com)–a good inspiration source (some ideas and CSS were taken from here) :sparkle:",
+            "[**@Cerberus-tm**](https://github.com/Cerberus-tm)–who had the idea for the site name :cake:"
+        ]
+    }
   },
   "dependencies": {
     "barbe": "^2.1.0",
