@@ -1,4 +1,4 @@
-[![showalicense.com](http://i.imgur.com/DEYIE8P.png)](#)
+[![showalicense.com](http://i.imgur.com/DEYIE8P.png)](http://showalicense.com/)
 
 # showalicense.com [![Support this project][donate-now]][paypal-donations]
 
@@ -16,6 +16,8 @@ Whether you just want to show a license or see its human-readable explanation, y
  - `fullname=<name>`: set the copyright holder name
  - `year=<name>`: set the starting copyright yea
  - `hide_explanations=<true|false>` (default: `false`): hide the explanations column
+
+[![showalicense.com](http://i.imgur.com/DikgR8H.png)](http://showalicense.com/)
 
 ## Examples
 
