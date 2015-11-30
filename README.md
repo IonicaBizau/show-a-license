@@ -4,6 +4,10 @@
 
 A site to provide an easy way to show licenses and their human-readable explanations.
 
+## Your help is needed! :heart:
+
+Contribute by explaining licenses. Check out [this issue](https://github.com/IonicaBizau/showalicense.com/issues/1). :memo: :book:
+
 ## Usage
 
 Whether you just want to show a license or see its human-readable explanation, you can use this website. It provides a nice querystring API documented below:

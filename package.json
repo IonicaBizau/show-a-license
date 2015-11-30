@@ -14,6 +14,10 @@
     "h_img": "http://i.imgur.com/DEYIE8P.png",
     "description": [
       {
+        "h2": "Your help is needed! :heart:"
+      },
+      { "p": "Contribute by explaining licenses. Check out [this issue](https://github.com/IonicaBizau/showalicense.com/issues/1). :memo: :book:" },
+      {
         "h2": "Usage"
       },
       {
