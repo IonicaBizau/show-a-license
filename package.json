@@ -1,6 +1,6 @@
 {
   "name": "showalicense.com",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A site to provide an easy way to show licenses and their human-readable explanations.",
   "main": "lib/index.js",
   "scripts": {
@@ -19,7 +19,9 @@
       {
         "h2": "Your help is needed! :heart:"
       },
-      { "p": "Contribute by explaining licenses. Check out [this issue](https://github.com/IonicaBizau/showalicense.com/issues/1). :memo: :book:" },
+      {
+        "p": "Contribute by explaining licenses. Check out [this issue](https://github.com/IonicaBizau/showalicense.com/issues/1). :memo: :book:"
+      },
       {
         "h2": "Usage"
       },
@@ -83,10 +85,10 @@
       }
     ],
     "thanks": {
-        "ul": [
-            "[github/choosealicense.com](https://github.com/github/choosealicense.com)–a good inspiration source (some ideas and CSS were taken from here) :sparkle:",
-            "[**@Cerberus-tm**](https://github.com/Cerberus-tm)–who had the idea for the site name :cake:"
-        ]
+      "ul": [
+        "[github/choosealicense.com](https://github.com/github/choosealicense.com)–a good inspiration source (some ideas and CSS were taken from here) :sparkle:",
+        "[**@Cerberus-tm**](https://github.com/Cerberus-tm)–who had the idea for the site name :cake:"
+      ]
     }
   },
   "dependencies": {
