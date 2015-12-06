@@ -1,9 +1,8 @@
 # :eight_spoked_asterisk: :stars: :sparkles: :dizzy: :star2: :star2: :sparkles: :dizzy: :star2: :star2: Contributing :star: :star2: :dizzy: :sparkles:  :star: :star2: :dizzy: :sparkles: :stars: :eight_spoked_asterisk:
 
-So, you want to contribute to this project! That's awesome. However, before
-doing so, please read the following simple steps how to contribute. This will
-make the life easier and will avoid wasting time on things which are not
-requested. :sparkles:
+So, you want to contribute to this project? That's awesome! However, before
+doing so, please read the following guidelines before contributing. This will
+make life much easier for our developers and will avoid any wasted time on things that are not necessary or requested at this time. :sparkles:
 
 ## Discuss the changes before doing them
  - First of all, open an issue in the repository, using the bug tracker ,
