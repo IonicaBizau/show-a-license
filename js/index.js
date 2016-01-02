@@ -67,7 +67,7 @@ function renderInfo(c) {
 
     if (data.year) {
         if (data.year < thisYear) {
-            data.year += "-" + thisYear.substring(2);
+            data.year += "-" + thisYear;
         }
     } else {
         delete data.year;
