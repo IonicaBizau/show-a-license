@@ -20,7 +20,7 @@ Whether you just want to show a license or see its human-readable explanation, y
  - `hide_explanations=<true|false>` (default: `false`): hide the explanations column
 
 
-[![showalicense.com](http://i.imgur.com/DikgR8H.png)](http://showalicense.com/)
+[![showalicense.com](http://i.imgur.com/AB42LJo.png)](http://showalicense.com/)
 
 ## Examples
 
