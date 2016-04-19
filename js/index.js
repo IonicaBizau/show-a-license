@@ -5,6 +5,7 @@ var $ = require("elm-select")
   , sameTime = require("same-time")
   , barbe = require("barbe")
   , Err = require("err")
+  , yearRange = require("year-range")
   ;
 
 // Constants
@@ -54,8 +55,7 @@ function showNormalView() {
 
 function renderInfo(c) {
     var data = {}
-      , thisYear = new Date().getFullYear().toString()
-      , startYear = Url.queryString("year")
+      , startYear = parseInt(Url.queryString("year"))
       ;
 
     data.year = startYear;
@@ -66,9 +66,7 @@ function renderInfo(c) {
     }
 
     if (data.year) {
-        if (data.year < thisYear) {
-            data.year += "-" + thisYear.substring(2);
-        }
+        data.year = yearRange(data.year);
     } else {
         delete data.year;
     }
@@ -181,7 +179,7 @@ function checkHash() {
 window.addEventListener("hashchange", checkHash);
 window.addEventListener("load", checkHash);
 
-},{"barbe":2,"elm-select":4,"err":6,"same-time":8,"whatwg-fetch":12}],2:[function(require,module,exports){
+},{"barbe":2,"elm-select":5,"err":6,"same-time":9,"whatwg-fetch":11,"year-range":12}],2:[function(require,module,exports){
 // Dependencies
 var RegexEscape = require("regex-escape");
 
@@ -232,36 +230,78 @@ function Barbe(text, arr, data) {
 
 module.exports = Barbe;
 
-},{"regex-escape":3}],3:[function(require,module,exports){
-/**
- * RegexEscape
- * Escapes a string for using it in a regular expression.
- *
- * @name RegexEscape
- * @function
- * @param {String} input The string that must be escaped.
- * @return {String} The escaped string.
- */
-function RegexEscape(input) {
-    return input.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-}
+},{"regex-escape":8}],3:[function(require,module,exports){
+"use strict";
 
 /**
- * proto
- * Adds the `RegexEscape` function to `RegExp` class.
+ * currentYear
+ * Get the current year.
  *
- * @name proto
+ * @name currentYear
  * @function
- * @return {Function} The `RegexEscape` function.
+ * @param {Boolean} str If `true`, the result will be stringified.
+ * @param {Date} d An optional date to get the year from.
+ * @returns {String|Number} The current year.
  */
-RegexEscape.proto = function () {
-    RegExp.escape = RegexEscape;
-    return RegexEscape;
+module.exports = function currentYear (str, d) {
+    if (str && str.constructor === Date) {
+        d = str;
+        str = false;
+    }
+    if (str) { return currentYear(false, d).toString(); }
+    return (d || new Date()).getFullYear();
 };
 
-module.exports = RegexEscape;
-
 },{}],4:[function(require,module,exports){
+// Dependencies
+var Typpy = require("typpy");
+
+/**
+ * Deffy
+ * Computes a final value by providing the input and default values.
+ *
+ * @name Deffy
+ * @function
+ * @param {Anything} input The input value.
+ * @param {Anything|Function} def The default value or a function getting the
+ * input value as first argument.
+ * @param {Object|Boolean} options The `empty` value or an object containing
+ * the following fields:
+ *
+ *  - `empty` (Boolean): Handles the input value as empty field (`input || default`). Default is `false`.
+ *
+ * @return {Anything} The computed value.
+ */
+function Deffy(input, def, options) {
+
+    // Default is a function
+    if (typeof def === "function") {
+        return def(input);
+    }
+
+    options = Typpy(options) === "boolean" ? {
+        empty: options
+    } : {
+        empty: false
+    };
+
+    // Handle empty
+    if (options.empty) {
+        return input || def;
+    }
+
+    // Return input
+    if (Typpy(input) === Typpy(def)) {
+        return input;
+    }
+
+    // Return the default
+    return def;
+}
+
+module.exports = Deffy;
+
+},{"typpy":10}],5:[function(require,module,exports){
 // Dependencies
 var Typpy = require("typpy");
 
@@ -313,91 +353,7 @@ function ElmSelect(elm, fn, args, parent) {
 
 module.exports = ElmSelect;
 
-},{"typpy":5}],5:[function(require,module,exports){
-/**
- * Typpy
- * Gets the type of the input value or compares it
- * with a provided type.
- *
- * Usage:
- *
- * ```js
- * Typpy({}) // => "object"
- * Typpy(42, Number); // => true
- * Typpy.get([], "array"); => true
- * ```
- *
- * @name Typpy
- * @function
- * @param {Anything} input The input value.
- * @param {Constructor|String} target The target type.
- * It could be a string (e.g. `"array"`) or a
- * constructor (e.g. `Array`).
- * @return {String|Boolean} It returns `true` if the
- * input has the provided type `target` (if was provided),
- * `false` if the input type does *not* have the provided type
- * `target` or the stringified type of the input (always lowercase).
- */
-function Typpy(input, target) {
-    if (arguments.length === 2) {
-        return Typpy.is(input, target);
-    }
-    return Typpy.get(input, true);
-}
-
-/**
- * Typpy.is
- * Checks if the input value has a specified type.
- *
- * @name Typpy.is
- * @function
- * @param {Anything} input The input value.
- * @param {Constructor|String} target The target type.
- * It could be a string (e.g. `"array"`) or a
- * constructor (e.g. `Array`).
- * @return {Boolean} `true`, if the input has the same
- * type with the target or `false` otherwise.
- */
-Typpy.is = function (input, target) {
-    return Typpy.get(input, typeof target === "string") === target;
-};
-
-/**
- * Typpy.get
- * Gets the type of the input value. This is used internally.
- *
- * @name Typpy.get
- * @function
- * @param {Anything} input The input value.
- * @param {Boolean} str A flag to indicate if the return value
- * should be a string or not.
- * @return {Constructor|String} The input value constructor
- * (if any) or the stringified type (always lowercase).
- */
-Typpy.get = function (input, str) {
-
-    if (typeof input === "string") {
-        return str ? "string" : String;
-    }
-
-    if (null === input) {
-        return str ? "null" : null;
-    }
-
-    if (undefined === input) {
-        return str ? "undefined" : undefined;
-    }
-
-    if (input !== input) {
-        return str ? "nan" : NaN;
-    }
-
-    return str ? input.constructor.name.toLowerCase() : input.constructor;
-};
-
-module.exports = Typpy;
-
-},{}],6:[function(require,module,exports){
+},{"typpy":10}],6:[function(require,module,exports){
 // Dependencies
 var typpy = require("typpy");
 
@@ -441,124 +397,7 @@ function Err(error, code, data) {
 
 module.exports = Err;
 
-},{"typpy":7}],7:[function(require,module,exports){
-arguments[4][5][0].apply(exports,arguments)
-},{"dup":5}],8:[function(require,module,exports){
-(function (process){
-// Dependencies
-var Deffy = require("deffy");
-
-/**
- * SameTime
- * Calls functions in parallel and stores the results.
- *
- * @name SameTime
- * @function
- * @param {Array} arr An array of functions getting the callback parameter in the first argument.
- * @param {Function} cb The callback function called with:
- *
- *  - first parameter: `null` if there were no errors or an array containing the error values
- *  - `1 ... n` parameters: arrays containing the callback results
- *
- * @return {SameTime} The `SameTime` function.
- */
-function SameTime(arr, cb) {
-
-    var result = []
-      , complete = 0
-      , length = arr.length
-      ;
-
-    if (!arr.length) {
-        return process.nextTick(cb);
-    }
-
-    // Run functions
-    arr.forEach(function (c, index) {
-        var _done = false;
-
-        // Call the current function
-        c(function () {
-
-            if (_done) { return; }
-            _done = true;
-
-            var args = [].slice.call(arguments)
-              , cRes = null
-              , i = 0
-              ;
-
-            // Prepare the result data
-            for (; i < args.length; ++i) {
-                cRes = result[i] = Deffy(result[i], []);
-                cRes[index] = args[i];
-            }
-
-            // Check if all functions send the responses
-            if (++complete !== length) { return; }
-            if (!Deffy(result[0], []).filter(Boolean).length) {
-                result[0] = null;
-            }
-            cb.apply(null, result);
-        });
-    });
-}
-
-module.exports = SameTime;
-
-}).call(this,require('_process'))
-},{"_process":11,"deffy":9}],9:[function(require,module,exports){
-// Dependencies
-var Typpy = require("typpy");
-
-/**
- * Deffy
- * Computes a final value by providing the input and default values.
- *
- * @name Deffy
- * @function
- * @param {Anything} input The input value.
- * @param {Anything|Function} def The default value or a function getting the
- * input value as first argument.
- * @param {Object|Boolean} options The `empty` value or an object containing
- * the following fields:
- *
- *  - `empty` (Boolean): Handles the input value as empty field (`input || default`). Default is `false`.
- *
- * @return {Anything} The computed value.
- */
-function Deffy(input, def, options) {
-
-    // Default is a function
-    if (typeof def === "function") {
-        return def(input);
-    }
-
-    options = Typpy(options) === "boolean" ? {
-        empty: options
-    } : {
-        empty: false
-    };
-
-    // Handle empty
-    if (options.empty) {
-        return input || def;
-    }
-
-    // Return input
-    if (Typpy(input) === Typpy(def)) {
-        return input;
-    }
-
-    // Return the default
-    return def;
-}
-
-module.exports = Deffy;
-
-},{"typpy":10}],10:[function(require,module,exports){
-arguments[4][5][0].apply(exports,arguments)
-},{"dup":5}],11:[function(require,module,exports){
+},{"typpy":10}],7:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -651,7 +490,184 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],12:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
+/**
+ * RegexEscape
+ * Escapes a string for using it in a regular expression.
+ *
+ * @name RegexEscape
+ * @function
+ * @param {String} input The string that must be escaped.
+ * @return {String} The escaped string.
+ */
+function RegexEscape(input) {
+    return input.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+}
+
+/**
+ * proto
+ * Adds the `RegexEscape` function to `RegExp` class.
+ *
+ * @name proto
+ * @function
+ * @return {Function} The `RegexEscape` function.
+ */
+RegexEscape.proto = function () {
+    RegExp.escape = RegexEscape;
+    return RegexEscape;
+};
+
+module.exports = RegexEscape;
+
+},{}],9:[function(require,module,exports){
+(function (process){
+// Dependencies
+var Deffy = require("deffy");
+
+/**
+ * SameTime
+ * Calls functions in parallel and stores the results.
+ *
+ * @name SameTime
+ * @function
+ * @param {Array} arr An array of functions getting the callback parameter in the first argument.
+ * @param {Function} cb The callback function called with:
+ *
+ *  - first parameter: `null` if there were no errors or an array containing the error values
+ *  - `1 ... n` parameters: arrays containing the callback results
+ *
+ * @return {SameTime} The `SameTime` function.
+ */
+function SameTime(arr, cb) {
+
+    var result = []
+      , complete = 0
+      , length = arr.length
+      ;
+
+    if (!arr.length) {
+        return process.nextTick(cb);
+    }
+
+    // Run functions
+    arr.forEach(function (c, index) {
+        var _done = false;
+
+        // Call the current function
+        c(function () {
+
+            if (_done) { return; }
+            _done = true;
+
+            var args = [].slice.call(arguments)
+              , cRes = null
+              , i = 0
+              ;
+
+            // Prepare the result data
+            for (; i < args.length; ++i) {
+                cRes = result[i] = Deffy(result[i], []);
+                cRes[index] = args[i];
+            }
+
+            // Check if all functions send the responses
+            if (++complete !== length) { return; }
+            if (!Deffy(result[0], []).filter(Boolean).length) {
+                result[0] = null;
+            }
+            cb.apply(null, result);
+        });
+    });
+}
+
+module.exports = SameTime;
+
+}).call(this,require('_process'))
+},{"_process":7,"deffy":4}],10:[function(require,module,exports){
+/**
+ * Typpy
+ * Gets the type of the input value or compares it
+ * with a provided type.
+ *
+ * Usage:
+ *
+ * ```js
+ * Typpy({}) // => "object"
+ * Typpy(42, Number); // => true
+ * Typpy.get([], "array"); => true
+ * ```
+ *
+ * @name Typpy
+ * @function
+ * @param {Anything} input The input value.
+ * @param {Constructor|String} target The target type.
+ * It could be a string (e.g. `"array"`) or a
+ * constructor (e.g. `Array`).
+ * @return {String|Boolean} It returns `true` if the
+ * input has the provided type `target` (if was provided),
+ * `false` if the input type does *not* have the provided type
+ * `target` or the stringified type of the input (always lowercase).
+ */
+function Typpy(input, target) {
+    if (arguments.length === 2) {
+        return Typpy.is(input, target);
+    }
+    return Typpy.get(input, true);
+}
+
+/**
+ * Typpy.is
+ * Checks if the input value has a specified type.
+ *
+ * @name Typpy.is
+ * @function
+ * @param {Anything} input The input value.
+ * @param {Constructor|String} target The target type.
+ * It could be a string (e.g. `"array"`) or a
+ * constructor (e.g. `Array`).
+ * @return {Boolean} `true`, if the input has the same
+ * type with the target or `false` otherwise.
+ */
+Typpy.is = function (input, target) {
+    return Typpy.get(input, typeof target === "string") === target;
+};
+
+/**
+ * Typpy.get
+ * Gets the type of the input value. This is used internally.
+ *
+ * @name Typpy.get
+ * @function
+ * @param {Anything} input The input value.
+ * @param {Boolean} str A flag to indicate if the return value
+ * should be a string or not.
+ * @return {Constructor|String} The input value constructor
+ * (if any) or the stringified type (always lowercase).
+ */
+Typpy.get = function (input, str) {
+
+    if (typeof input === "string") {
+        return str ? "string" : String;
+    }
+
+    if (null === input) {
+        return str ? "null" : null;
+    }
+
+    if (undefined === input) {
+        return str ? "undefined" : undefined;
+    }
+
+    if (input !== input) {
+        return str ? "nan" : NaN;
+    }
+
+    return str ? input.constructor.name.toLowerCase() : input.constructor;
+};
+
+module.exports = Typpy;
+
+},{}],11:[function(require,module,exports){
 (function() {
   'use strict';
 
@@ -1034,4 +1050,40 @@ process.umask = function() { return 0; };
   self.fetch.polyfill = true
 })();
 
-},{}]},{},[1]);
+},{}],12:[function(require,module,exports){
+"use strict";
+
+const year = require("current-year");
+
+/**
+ * yearRange
+ * Get a human-readable year range.
+ *
+ * @name yearRange
+ * @function
+ * @param {Number|Date} date1 The first date or the year.
+ * @param {Number|Date} date2 The second date or the year.
+ * @returns {String} The year range.
+ */
+module.exports = function yearRange (date1, date2) {
+    let getY = x => typeof x === "number" ? x.toString() : year(true, x)
+      , y1 = getY(date1)
+      , y2 = getY(date2)
+      ;
+
+    if (y1 === y2) {
+        return y1;
+    }
+
+    let p1 = y1.slice(0, -2)
+      , p2 = y2.slice(0, -2)
+      ;
+
+    if (p1 === p2) {
+        return y1 + "-" + y2.substr(2);
+    }
+
+    return y1 + "-" + y2;
+};
+
+},{"current-year":3}]},{},[1]);
