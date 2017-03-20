@@ -1,6 +1,6 @@
 {
   "name": "showalicense.com",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "A site to provide an easy way to show licenses and their human-readable explanations.",
   "main": "lib/index.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "start": "statique -p 9000",
     "watch": "watchify lib/index.js -o js/index.js -v"
   },
-  "author": "Ionică Bizău <bizauionica@gmail.com> (http://ionicabizau.net)",
+  "author": "Ionică Bizău <bizauionica@gmail.com> (https://ionicabizau.net)",
   "license": "MIT",
   "blah": {
     "h_img": "http://i.imgur.com/DEYIE8P.png",
@@ -124,12 +124,11 @@
     "bin/",
     "app/",
     "lib/",
-    "build/",
     "dist/",
     "src/",
+    "scripts/",
     "resources/",
     "menu/",
-    "scripts/",
     "cli.js",
     "index.js"
   ]
