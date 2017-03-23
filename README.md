@@ -21,6 +21,7 @@ Whether you just want to show a license or see its human-readable explanation, y
  - `year=<name>`: set the starting copyright yea
  - `hide_explanations=<true|false>` (default: `false`): hide the explanations column
 
+
 [![showalicense.com](http://i.imgur.com/AB42LJo.png)](http://showalicense.com/)
 
 ## Examples
@@ -29,6 +30,7 @@ Whether you just want to show a license or see its human-readable explanation, y
  - To set the copyright holder name, use the `fullname=<name>` querystring parameter: http://showalicense.com/?fullname=Alice#license-mit
  - To set the starting copyright year use the `year` parameter: http://showalicense.com/?year=2013&fullname=Alice#license-mit
  - To hide the explanations column, you have to use `hide_explanations=true`: http://showalicense.com/?hide_explanations=true&year=2013&fullname=Alice#license-mit
+
 
 ## :yum: How to contribute
 Have an idea? Found a bug? See [how to contribute][contributing].
@@ -63,6 +65,7 @@ Contributions in this directions are really appreciated.
  2. Edit the `explanations/<license>.txt` file (you can follow [`explanations/mit.txt`](/explanations/mit.txt) as example).
  3. Add yourself as contributor in [`package.json`](/package.json).
  4. Raise a pull request! :tada:
+
 ### Adding a new license
 
 If the license you're searching for is missing, make sure you add it.
@@ -74,10 +77,12 @@ If the license you're searching for is missing, make sure you add it.
  4. Add yourself as contributor in [`package.json`](/package.json).
  5. Raise a pull request! :tada:
 
+
 ## :cake: Thanks
 
  - [github/choosealicense.com](https://github.com/github/choosealicense.com)–a good inspiration source (some ideas and CSS were taken from here) :sparkle:
  - [**@Cerberus-tm**](https://github.com/Cerberus-tm)–who had the idea for the site name :cake:
+
 
 
 ## :scroll: License
