@@ -179,7 +179,7 @@ function checkHash() {
 window.addEventListener("hashchange", checkHash);
 window.addEventListener("load", checkHash);
 
-},{"barbe":2,"elm-select":5,"err":6,"same-time":9,"whatwg-fetch":11,"year-range":12}],2:[function(require,module,exports){
+},{"barbe":2,"elm-select":5,"err":6,"same-time":11,"whatwg-fetch":13,"year-range":14}],2:[function(require,module,exports){
 // Dependencies
 var RegexEscape = require("regex-escape");
 
@@ -230,7 +230,7 @@ function Barbe(text, arr, data) {
 
 module.exports = Barbe;
 
-},{"regex-escape":8}],3:[function(require,module,exports){
+},{"regex-escape":10}],3:[function(require,module,exports){
 "use strict";
 
 /**
@@ -243,15 +243,17 @@ module.exports = Barbe;
  * @param {Date} d An optional date to get the year from.
  * @returns {String|Number} The current year.
  */
-module.exports = function currentYear (str, d) {
+
+module.exports = function currentYear(str, d) {
     if (str && str.constructor === Date) {
         d = str;
         str = false;
     }
-    if (str) { return currentYear(false, d).toString(); }
+    if (str) {
+        return currentYear(false, d).toString();
+    }
     return (d || new Date()).getFullYear();
 };
-
 },{}],4:[function(require,module,exports){
 // Dependencies
 var Typpy = require("typpy");
@@ -301,15 +303,16 @@ function Deffy(input, def, options) {
 
 module.exports = Deffy;
 
-},{"typpy":10}],5:[function(require,module,exports){
-// Dependencies
-var Typpy = require("typpy");
+},{"typpy":12}],5:[function(require,module,exports){
+"use strict";
+
+var typpy = require("typpy");
 
 /**
- * ElmSelect
+ * elmSelect
  * Select DOM elements and optionally call a function.
  *
- * @name ElmSelect
+ * @name elmSelect
  * @function
  * @param {String|Element|NodeList} elm A stringified query selector, an element or a node list.
  * @param {Function} fn If this function is provided, it will be called with the current element and additional arguments passed in `args`.
@@ -317,23 +320,18 @@ var Typpy = require("typpy");
  * @param {String|Element} parent The parent element where to search the elements (default: `document`). This makes sense only when a query selector is used.
  * @return {NodeList} A node list containing the selected elements.
  */
-function ElmSelect(elm, fn, args, parent) {
-    var i = 0
-      , _args = null
-      ;
+function elmSelect(elm, fn, args, parent) {
 
     // Handle the query selectors
     if (typeof elm === "string") {
-        if (parent) {
-            parent = ElmSelect(parent);
-        } else {
-            parent = document;
-        }
+        parent = parent || document;
+        parent = typeof parent === "string" ? elmSelect(parent, null, null, document)[0] : parent;
+        if (!parent) throw new Error("Cannot find the parent element.");
         elm = parent.querySelectorAll(elm);
     }
 
     // Check if the input is a nodelist
-    if (!Typpy(elm, NodeList) && !Typpy(elm, HTMLCollection)) {
+    if (!typpy(elm, NodeList) && !typpy(elm, HTMLCollection)) {
         elm = [elm];
     }
 
@@ -342,8 +340,8 @@ function ElmSelect(elm, fn, args, parent) {
         if (!Array.isArray(args)) {
             args = [args];
         }
-        for (; i < elm.length; ++i) {
-            _args = [elm[i]].concat(args);
+        for (var i = 0; i < elm.length; ++i) {
+            var _args = [elm[i]].concat(args);
             fn.apply(this, _args);
         }
     }
@@ -351,9 +349,8 @@ function ElmSelect(elm, fn, args, parent) {
     return elm;
 }
 
-module.exports = ElmSelect;
-
-},{"typpy":10}],6:[function(require,module,exports){
+module.exports = elmSelect;
+},{"typpy":12}],6:[function(require,module,exports){
 // Dependencies
 var typpy = require("typpy");
 
@@ -397,16 +394,144 @@ function Err(error, code, data) {
 
 module.exports = Err;
 
-},{"typpy":10}],7:[function(require,module,exports){
-// shim for using process in browser
+},{"typpy":12}],7:[function(require,module,exports){
+"use strict";
 
+var noop6 = require("noop6");
+
+(function () {
+    var NAME_FIELD = "name";
+
+    if (typeof noop6.name === "string") {
+        return;
+    }
+
+    try {
+        Object.defineProperty(Function.prototype, NAME_FIELD, {
+            get: function get() {
+                var name = this.toString().trim().match(/^function\s*([^\s(]+)/)[1];
+                Object.defineProperty(this, NAME_FIELD, { value: name });
+                return name;
+            }
+        });
+    } catch (e) {}
+})();
+
+/**
+ * functionName
+ * Get the function name.
+ *
+ * @name functionName
+ * @function
+ * @param {Function} input The input function.
+ * @returns {String} The function name.
+ */
+module.exports = function functionName(input) {
+    return input.name;
+};
+},{"noop6":8}],8:[function(require,module,exports){
+"use strict";
+
+module.exports = function () {};
+},{}],9:[function(require,module,exports){
+// shim for using process in browser
 var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
 var queue = [];
 var draining = false;
 var currentQueue;
 var queueIndex = -1;
 
 function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
     draining = false;
     if (currentQueue.length) {
         queue = currentQueue.concat(queue);
@@ -422,7 +547,7 @@ function drainQueue() {
     if (draining) {
         return;
     }
-    var timeout = setTimeout(cleanUpNextTick);
+    var timeout = runTimeout(cleanUpNextTick);
     draining = true;
 
     var len = queue.length;
@@ -439,7 +564,7 @@ function drainQueue() {
     }
     currentQueue = null;
     draining = false;
-    clearTimeout(timeout);
+    runClearTimeout(timeout);
 }
 
 process.nextTick = function (fun) {
@@ -451,7 +576,7 @@ process.nextTick = function (fun) {
     }
     queue.push(new Item(fun, args));
     if (queue.length === 1 && !draining) {
-        setTimeout(drainQueue, 0);
+        runTimeout(drainQueue);
     }
 };
 
@@ -479,6 +604,10 @@ process.off = noop;
 process.removeListener = noop;
 process.removeAllListeners = noop;
 process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
 
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
@@ -490,7 +619,9 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],8:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
+"use strict";
+
 /**
  * RegexEscape
  * Escapes a string for using it in a regular expression.
@@ -501,7 +632,7 @@ process.umask = function() { return 0; };
  * @return {String} The escaped string.
  */
 function RegexEscape(input) {
-    return input.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+  return input.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
 }
 
 /**
@@ -513,22 +644,22 @@ function RegexEscape(input) {
  * @return {Function} The `RegexEscape` function.
  */
 RegexEscape.proto = function () {
-    RegExp.escape = RegexEscape;
-    return RegexEscape;
+  RegExp.escape = RegexEscape;
+  return RegexEscape;
 };
 
 module.exports = RegexEscape;
-
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 (function (process){
-// Dependencies
-var Deffy = require("deffy");
+"use strict";
+
+var deffy = require("deffy");
 
 /**
- * SameTime
+ * sameTime
  * Calls functions in parallel and stores the results.
  *
- * @name SameTime
+ * @name sameTime
  * @function
  * @param {Array} arr An array of functions getting the callback parameter in the first argument.
  * @param {Function} cb The callback function called with:
@@ -536,17 +667,25 @@ var Deffy = require("deffy");
  *  - first parameter: `null` if there were no errors or an array containing the error values
  *  - `1 ... n` parameters: arrays containing the callback results
  *
- * @return {SameTime} The `SameTime` function.
+ * @param {Array} store An optional array to store the data in. If `null`, data won't be stored.
+ * @return {sameTime} The `sameTime` function.
  */
-function SameTime(arr, cb) {
+module.exports = function sameTime(arr, cb, store) {
 
-    var result = []
-      , complete = 0
-      , length = arr.length
-      ;
+    var result = store,
+        complete = 0,
+        length = arr.length;
+
+    if (cb) {
+        if (result === undefined) {
+            result = [];
+        }
+    } else {
+        result = null;
+    }
 
     if (!arr.length) {
-        return process.nextTick(cb);
+        return process.nextTick(cb.bind(null, null, []));
     }
 
     // Run functions
@@ -556,34 +695,42 @@ function SameTime(arr, cb) {
         // Call the current function
         c(function () {
 
-            if (_done) { return; }
+            if (_done) {
+                return;
+            }
             _done = true;
 
-            var args = [].slice.call(arguments)
-              , cRes = null
-              , i = 0
-              ;
+            var args = [].slice.call(arguments),
+                cRes = null,
+                i = 0;
 
-            // Prepare the result data
-            for (; i < args.length; ++i) {
-                cRes = result[i] = Deffy(result[i], []);
-                cRes[index] = args[i];
+            if (result) {
+                // Prepare the result data
+                for (; i < args.length; ++i) {
+                    cRes = result[i] = deffy(result[i], []);
+                    cRes[index] = args[i];
+                }
             }
 
             // Check if all functions send the responses
-            if (++complete !== length) { return; }
-            if (!Deffy(result[0], []).filter(Boolean).length) {
-                result[0] = null;
+            if (++complete !== length) {
+                return;
             }
-            cb.apply(null, result);
+            if (result) {
+                if (!deffy(result[0], []).filter(Boolean).length) {
+                    result[0] = null;
+                }
+            }
+            cb && cb.apply(null, result);
         });
     });
-}
-
-module.exports = SameTime;
-
+};
 }).call(this,require('_process'))
-},{"_process":7,"deffy":4}],10:[function(require,module,exports){
+},{"_process":9,"deffy":4}],12:[function(require,module,exports){
+"use strict";
+
+require("function.name");
+
 /**
  * Typpy
  * Gets the type of the input value or compares it
@@ -666,8 +813,7 @@ Typpy.get = function (input, str) {
 };
 
 module.exports = Typpy;
-
-},{}],11:[function(require,module,exports){
+},{"function.name":7}],13:[function(require,module,exports){
 (function() {
   'use strict';
 
@@ -1050,10 +1196,10 @@ module.exports = Typpy;
   self.fetch.polyfill = true
 })();
 
-},{}],12:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 "use strict";
 
-const year = require("current-year");
+var year = require("current-year");
 
 /**
  * yearRange
@@ -1065,19 +1211,19 @@ const year = require("current-year");
  * @param {Number|Date} date2 The second date or the year.
  * @returns {String} The year range.
  */
-module.exports = function yearRange (date1, date2) {
-    let getY = x => typeof x === "number" ? x.toString() : year(true, x)
-      , y1 = getY(date1)
-      , y2 = getY(date2)
-      ;
+module.exports = function yearRange(date1, date2) {
+    var getY = function getY(x) {
+        return typeof x === "number" ? x.toString() : year(true, x);
+    },
+        y1 = getY(date1),
+        y2 = getY(date2);
 
     if (y1 === y2) {
         return y1;
     }
 
-    let p1 = y1.slice(0, -2)
-      , p2 = y2.slice(0, -2)
-      ;
+    var p1 = y1.slice(0, -2),
+        p2 = y2.slice(0, -2);
 
     if (p1 === p2) {
         return y1 + "-" + y2.substr(2);
@@ -1085,5 +1231,4 @@ module.exports = function yearRange (date1, date2) {
 
     return y1 + "-" + y2;
 };
-
 },{"current-year":3}]},{},[1]);
