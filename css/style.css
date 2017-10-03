@@ -97,7 +97,6 @@ table.shadow {
 .main-view h2 span {
     position: absolute;
     display: block;
-    float: left;
     top: 50%;
     margin-top: -22px;
     color: #f1f1f1;
