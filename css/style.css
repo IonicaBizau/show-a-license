@@ -28,7 +28,7 @@ html, body {
     width: 100%;
 }
 
-input.license-name {
+input.search-license-name {
 padding: 1em 5em;font-size: 1em;text-align: center;width: 260px;max-width: 100%;}
 
 pre {

@@ -18,8 +18,40 @@
                     Because humans should be able to understand licenses, not only attorneys.
                     <span>}</span>
                 </h2>
-                <div >
-                    <input data-minchars="0" class="awesomplete form-elm license-name" placeholder="Enter the LICENSE name"></input>
+                <div>
+                    <input data-minchars="0" class="awesomplete form-elm search-license-name" placeholder="Enter the LICENSE name"></input>
+                </div>
+            </section>
+            <section class="main-view text-center">
+                <h2>
+                    <span>{</span>
+                    Build a link to a personalized license page
+                    <span>}</span>
+                </h2>
+                <div>
+                    <!-- License link editor form that opens the new link in a
+                        new tab. Fields are in <p> elements where needed, to
+                        show each field on a separate row. Each field is styled
+                        using the CaiuSS CSS framework. The form also has a
+                        reset button. -->
+                    <form method="GET" target="_blank">
+                        <!-- The second .awesomplete instance, populated in JS
+                        code. -->
+                        <input data-minchars="0" class="awesomplete form-elm link-license-name"
+                            placeholder="Enter the LICENSE name"></input>
+                        <p><input type="text" name="fullname"
+                            placeholder="Full name" class="form-elm">
+                        <p><input type="text" name="year" placeholder="Starting year"
+                            class="form-elm">
+                        <p><label>
+                            <input class="form-elm" type="checkbox" value="true"
+                            name="hide_explanations"> Hide the explanations column
+                        </label>
+                        <p><input type="submit" value="Open link"
+                            class="btn bg-blue">
+                        <input type="reset" value="Reset form"
+                            class="btn bg-white">
+                    </form>
                 </div>
             </section>
             <section class="main-view triptych text-center">

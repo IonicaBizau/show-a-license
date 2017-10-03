@@ -15,13 +15,29 @@ var HASH_PREFIX = "#license-";
 var licenseTable = $(".license-view table")[0]
   , tableTbody = $("tbody", licenseTable)[0]
   , viewExplanationsEl = $("tfoot", licenseTable)[0]
-  , searchLicenseEl = $("input.awesomplete")[0]
+  , searchLicenseEl = $("input.search-license-name.awesomplete")[0]
+  , linkLicenseEl = $("input.link-license-name.awesomplete")[0]
+    form = $('form')[0]
   ;
 
-searchLicenseEl.setAttribute("data-list", _licenses.join(","));
+let licenses = _licenses.join(",");
+
+searchLicenseEl.setAttribute("data-list", licenses);
+linkLicenseEl.setAttribute("data-list", licenses);
+
 searchLicenseEl.addEventListener("awesomplete-selectcomplete", function () {
-    location.hash = "license-" + this.value;
+    location.hash = HASH_PREFIX + this.value;
+
+    // If the user starts by opening the `this.value` license, I suppose he will
+    // want to build a link to the same license after he comes back from the
+    // license page, so I set the license page link editor's license field to
+    // the same value.
+    linkLicenseEl.value = this.value;
 });
+
+form.addEventListener('submit', function (evt) {
+    form.action = HASH_PREFIX + linkLicenseEl.value;
+}, false);
 
 // Config
 var showExplanations;

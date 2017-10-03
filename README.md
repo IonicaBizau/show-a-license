@@ -20,7 +20,7 @@ Whether you just want to show a license or see its human-readable explanation, y
 
  - `#license-<license>` (hash): set the license to display
  - `fullname=<name>`: set the copyright holder name
- - `year=<name>`: set the starting copyright yea
+ - `year=<name>`: set the starting copyright year
  - `hide_explanations=<true|false>` (default: `false`): hide the explanations column
 
 
