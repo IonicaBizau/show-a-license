@@ -9,6 +9,9 @@
     "watch": "watchify lib/index.js -o js/index.js -v"
   },
   "author": "Ionică Bizău <bizauionica@gmail.com> (https://ionicabizau.net)",
+  "contributors": [
+    "Silviu Bogan <silviubogan@gmail.com> (https://lumea-lui-silviu.blogspot.ro)"
+  ],
   "license": "MIT",
   "blah": {
     "h_img": "http://i.imgur.com/DEYIE8P.png",
