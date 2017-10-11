@@ -40,11 +40,10 @@
         ]
       },
       {
-        "h2": "Installation"
+        "h2": "Developer installation"
       },
       {
         "ul": [
-          "`npm i -g blah`",
           "`cd build; node update-licenses-list.js; cd ..`",
           "In the end, run in parallel `npm run watch` and `npm start`",
           "Open in your browser [http://localhost:9000/index.html](http://localhost:9000/index.html)."
