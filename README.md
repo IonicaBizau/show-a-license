@@ -28,8 +28,6 @@ Whether you just want to show a license or see its human-readable explanation, y
 
 ## Developer installation
 
-- `$ npm i -g browserify watchify blah`;
-- `$ browserify lib/index -o js/index.js`;
 - `$ cd build; node update-licenses-list.js; cd ..`;
 - In the end, run in parallel `npm run watch` and `npm start`, and
 - open this in your browser: [http://localhost:9000/index.html](http://localhost:9000/index.html).
