@@ -1,6 +1,6 @@
 {
   "name": "show-a-license",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "A site to provide an easy way to show licenses and their human-readable explanations.",
   "main": "lib/index.js",
   "scripts": {
